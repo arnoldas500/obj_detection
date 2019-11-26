@@ -2,15 +2,15 @@
 Usage:
   # From tensorflow/models/
   # Create train data:
-  python generate_tfrecord.py --csv_input=data/train_labels.csv  --output_path=train.record
+  python generate_tfrecord_old.py --csv_input=/data/train_labels.csv  --output_path=/data/mesonet/labelImg/data/train.record
 
   # Create test data:
   python generate_tfrecord.py --csv_input=data/test_labels.csv  --output_path=test.record
   
   Updated:
-  python3 generate_tfrecord.py --csv_input=data/mesonet/labelImg/data/train_labels.csv --output_path=data/mesonet/labelImg/data/train.record --image_dir=/data/mesonet/labelImg/images/
+  python3 generate_tfrecord.py --csv_input=/data/mesonet/labelImg/data/train_labels.csv --output_path=/data/mesonet/labelImg/data/train.record --image_dir=/data/mesonet/labelImg/images/train/
 
-  python3 generate_tfrecord.py --csv_input=data/mesonet/labelImg/data/test_labels.csv --output_path=data/mesonet/labelImg/data/test.record --image_dir=/data/mesonet/labelImg/images/
+  python3 generate_tfrecord.py --csv_input=/data/mesonet/labelImg/data/test_labels.csv --output_path=/data/mesonet/labelImg/data/test.record --image_dir=/data/mesonet/labelImg/images/test/
 
 """
 from __future__ import division

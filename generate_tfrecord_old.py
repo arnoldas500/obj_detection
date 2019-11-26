@@ -3,10 +3,10 @@
 Usage:
   # From tensorflow/models/
   # Create train data:
-  python generate_tfrecord.py --csv_input=data/mesonet/labelImg/data/train_labels.csv  --output_path=train.record
+  python3 generate_tfrecord_old.py --csv_input=/data/mesonet/labelImg/data/train_labels.csv  --output_path=/data/mesonet/labelImg/data/train.record
 
   # Create test data:
-  python generate_tfrecord.py --csv_input=data/mesonet/labelImg/data/test_labels.csv  --output_path=test.record
+  python3 generate_tfrecord.py --csv_input=data/mesonet/labelImg/data/test_labels.csv  --output_path=/data/mesonet/labelImg/data/train.record
 """
 from __future__ import division
 from __future__ import print_function
@@ -88,7 +88,7 @@ def create_tf_example(group, path):
 
 def main(_):
     writer = tf.python_io.TFRecordWriter(FLAGS.output_path)
-    path = os.path.join(os.getcwd(), 'images')
+    path = os.path.join(os.getcwd(), '/data/mesonet/labelImg/images/train/')
     examples = pd.read_csv(FLAGS.csv_input)
     grouped = split(examples, 'filename')
     for group in grouped:
@@ -102,6 +102,4 @@ def main(_):
 
 if __name__ == '__main__':
     tf.app.run()
-×
-Drag and Drop
-The image will be downloaded
+
