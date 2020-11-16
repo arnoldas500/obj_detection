@@ -1,51 +1,13 @@
-'''
+
+"""
 Usage:
   # From tensorflow/models/
   # Create train data:
-  python generate_tfrecord_old.py --csv_input=data/train_labels.csv  --output_path=training/train.record
+  python3 generate_tfrecord_old.py --csv_input=/data/mesonet/labelImg/data/train_labels.csv  --output_path=/data/mesonet/labelImg/data/train.record
 
   # Create test data:
-  python generate_tfrecord.py --csv_input=data/test_labels.csv  --output_path=training/test.record
-  
-  Updated:
-  python3 generate_tfrecord.py --csv_input=/home/arnold/clouds_detection/obj_detection/data/train_labels.csv --output_path=/home/arnold/clouds_detection/obj_detection/data/train.record --image_dir=/home/arnold/clouds_detection/obj_detection/images/train/
-
-  python3 generate_tfrecord.py --csv_input=/home/arnold/clouds_detection/obj_detection/data/test_labels.csv --output_path=/home/arnold/clouds_detection/obj_detection/data/test.record --image_dir=/home/arnold/clouds_detection/obj_detection/images/test/
-
-After need to grab config ssd_...config and model tar 
-tar -xzf ssd_mobilenet_v1_coco_11_06_2017.tar.gz
-in config change PATH_TO_BE_CONFIG, num_classes (3 currently), train_config batch size, checkpoit name/path (fine_tune_checkpoint: "ssd_mobilenet_v1_coco_11_06_2017/model.ckpt" we download this from models) and label_map_path: "training/object-detect.pbtxt"
-laast update input_path for data/ train and test .record 
-
-NOTE: object-detect.pbtxt needs to be maunally created:
-'
-item {
-     id:1
-     name: 'scattered_clouds'
-}
-item {
-     id:2
-     name: 'clear'
-}
-item {
-     id:3
-     name'overcast'
-}
-'
-COPY dataa, images, downloaded model folder, training and .config to models/object_detection
-"cp -r data images training ssd_mobilenet_v1_coco_11_06_2017 /home/arnold/clouds_detection/modelsV2/research/object_detection/legacy"
-Finally can train:
-From within models/object_detection:
-UPDATE : code is now in models research object detection legacy 
-python3 train.py --logtostderr --train_dir=training/ --pipeline_config_path=training/ssd_mobilenet_v1_pets.config
-
-if have tf2.0 wont work need pip install tensorflow-gpu==1.15
-
-want to get avg loss below 1 (if above 2 model iss trash)
-'''
-
-
-
+  python3 generate_tfrecord.py --csv_input=data/mesonet/labelImg/data/test_labels.csv  --output_path=/data/mesonet/labelImg/data/train.record
+"""
 from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
@@ -62,7 +24,6 @@ from collections import namedtuple, OrderedDict
 flags = tf.app.flags
 flags.DEFINE_string('csv_input', '', 'Path to the CSV input')
 flags.DEFINE_string('output_path', '', 'Path to output TFRecord')
-flags.DEFINE_string('image_dir', '', 'Path to images')
 FLAGS = flags.FLAGS
 
 
@@ -127,7 +88,7 @@ def create_tf_example(group, path):
 
 def main(_):
     writer = tf.python_io.TFRecordWriter(FLAGS.output_path)
-    path = os.path.join(FLAGS.image_dir)
+    path = os.path.join(os.getcwd(), '/data/mesonet/labelImg/images/train/')
     examples = pd.read_csv(FLAGS.csv_input)
     grouped = split(examples, 'filename')
     for group in grouped:
@@ -141,3 +102,4 @@ def main(_):
 
 if __name__ == '__main__':
     tf.app.run()
+
