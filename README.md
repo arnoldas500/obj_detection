@@ -14,6 +14,38 @@ View on:
 http://hulk.asrc.albany.edu:6006
 ```
 
+## creating smaller container with only things that are needed for k8s
+### Fix all permission errors and deleted unneeded models etc
+```
+sudo rm -rf /raid/arnold/clouds_detection/modelsV2/research/object_detection/ssd_mobilenet_v1_coco_11_06_2017
+cd /raid/arnold/clouds_detection/modelsV2
+docker build -f research/object_detection/dockerfiles/tf1/Dockerfile -t od_tf1 .
+docker run -it od_tf1
+Also runs as user with ID 1000 and group 1000, which should map to the ID and group for your user on the Docker host
+Outside container sudo chown -R nobody:nogroup arnold && sudo chmod 777 -R arnold from raid
+$ cp -r ssd_mobilenet_v1_coco_11_06_2017 /home/arnold/clouds_detection/modelsV2/research/object_detection/legacy/train from /home/arnold/clouds_detection/obj_detection
+```
+### Start container
+```
+docker run --rm --runtime=nvidia --shm-size=1g --ulimit memlock=-1 --ulimit stack=67108864 -p 8879:8879 -p 6005:6006 -it -v /raid/arnold/clouds_detection/:/home/arnold/clouds_detection/ -w /home/arnold/clouds_detection/modelsV2/research/object_detection/legacy od_tf1
+Run from “/home/arnold/clouds_detection/modelsV2/research/object_detection/legacy”
+
+if using arnold clouds need to execute:
+$ zsh
+$ conda activate py3.4
+$ cd /home/arnold/clouds_detection/models/research
+$ export PYTHONPATH=$PYTHONPATH:pwd:pwd/slim
+
+```
+
+### Tensorboard
+```
+$ docker exec -it c134ac215479 /bin/bash
+$ tensorboard --logdir=training/ #frrom legacy
+http://169.226.59.67:6005/
+
+```
+
 ## Arnold object detection:
 Start docker container:
 ```
